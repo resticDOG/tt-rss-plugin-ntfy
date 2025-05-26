@@ -36,8 +36,8 @@ class Ntfy extends Plugin {
         ];
 
         $error = $this->send_ntfy_message($ntfy_server, $ntfy_token, $message);
-        
-        
+
+
         if ($error) {
             echo __("Error sending test notification:") . " " . $error;
         } else {
@@ -240,7 +240,7 @@ class Ntfy extends Plugin {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($message));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        
+
         curl_exec($ch);
         $error = curl_error($ch);
         curl_close($ch);
@@ -253,6 +253,7 @@ class Ntfy extends Plugin {
     }
 
     private function clean_html($html) {
+        $html = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $html = str_replace(array('<br>', '<br/>', '<br />'), "\n", $html);
         $cleaned_html = strip_tags($html);
         return $cleaned_html;
