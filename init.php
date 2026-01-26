@@ -4,7 +4,7 @@ class Ntfy extends Plugin {
 
     public function about() {
         return array(
-            1.0,
+            1.1,
             "Send notification via ntfy",
             "https://github.com/resticDOG/tt-rss-plugin-ntfy/"
         );
@@ -138,7 +138,7 @@ class Ntfy extends Plugin {
             foreach ($enabled_feeds as $f) {
                 print "<li><i class='material-icons'>rss_feed</i> <a href='#'
                     onclick='CommonDialogs.editFeed($f)'>".
-                    Feeds::_get_title($f) . "</a></li>";
+                    Feeds::_get_title($f, $_SESSION["uid"]) . "</a></li>";
 
             }
 
@@ -212,7 +212,7 @@ class Ntfy extends Plugin {
                 ? mb_substr($content, 0, 500, 'UTF-8') . "..."
                 : $content;
 
-            $title = "【" . Feeds::_get_title($article["feed"]["id"]) . "】" . $article["title"];
+            $title = "【" . Feeds::_get_title($article["feed"]["id"], $article["owner_uid"]) . "】" . $article["title"];
             $message = [
                 "topic" => $ntfy_topic,
                 "message" => $truncatedContent,
