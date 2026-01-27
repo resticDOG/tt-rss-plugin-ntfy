@@ -138,7 +138,7 @@ class Ntfy extends Plugin {
             foreach ($enabled_feeds as $f) {
                 print "<li><i class='material-icons'>rss_feed</i> <a href='#'
                     onclick='CommonDialogs.editFeed($f)'>".
-                    Feeds::_get_title($f, $_SESSION["uid"]) . "</a></li>";
+                    $this->__get_title($f, $_SESSION["uid"]) . "</a></li>";
 
             }
 
@@ -146,6 +146,20 @@ class Ntfy extends Plugin {
         }
         print "</div>";
 
+    }
+
+    private function __get_title($feed_id, int $uid) {
+        try {
+            $reflection = new ReflectionMethod('Feeds', '_get_title');
+            $paramCount = $reflection->getNumberOfParameters();
+            if ($paramCount > 2) {
+                return Feeds::_get_title($feed_id, $uid);
+            }
+            return Feeds::_get_title($feed_id);
+        } catch (ReflectionException $e) {
+            user_error("Feeds::_get_title method not found.", E_USER_WARNING);
+            return "UNKNOWN";
+        }
     }
 
     public function hook_prefs_edit_feed($feed_id) {
@@ -212,7 +226,7 @@ class Ntfy extends Plugin {
                 ? mb_substr($content, 0, 500, 'UTF-8') . "..."
                 : $content;
 
-            $title = "【" . Feeds::_get_title($article["feed"]["id"], $article["owner_uid"]) . "】" . $article["title"];
+            $title = "【" . $this->__get_title($article["feed"]["id"], $article["owner_uid"]) . "】" . $article["title"];
             $message = [
                 "topic" => $ntfy_topic,
                 "message" => $truncatedContent,
