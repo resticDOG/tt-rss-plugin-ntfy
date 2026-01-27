@@ -4,7 +4,7 @@ class Ntfy extends Plugin {
 
     public function about() {
         return array(
-            1.0.2,
+            "1.02",
             "Send notification via ntfy",
             "https://github.com/resticDOG/tt-rss-plugin-ntfy/"
         );
